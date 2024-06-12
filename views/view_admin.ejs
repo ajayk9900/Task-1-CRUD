@@ -1,0 +1,103 @@
+<%- include('header')%>
+
+  <!-- Content wrapper -->
+  <div class="content-wrapper">
+    <!-- Content -->
+
+    <div class="container-xxl flex-grow-1 container-p-y">
+      <div style="display: flex; justify-content: space-between;">
+        <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light"></span>View Admin</h4>
+        <h4 class="fw-bold py-3 mb-4"><a href="/admin/">Add Admin</a></h4>
+      </div>
+      <form class="mb-2 d-flex justify-content-end">
+        <input type="text" name="search" value="<%= search%>" class="border-0 p-2 shadow me-2 outline-none"
+          style="border-radius: 0.375rem;">
+        <button type="submit" class="btn btn-success">Search</button>
+      </form>
+      <!-- Basic Bootstrap Table -->
+      <div class="card">
+        <!-- <h5 class="card-header">Table Basic</h5> -->
+        <form action="/admin/multipleDelete" method="post">
+          <div class="table-responsive text-nowrap">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>
+                    <input type="checkbox" id="checkAll">
+                    <button type="submit"><i class="bx bx-trash"></i></button>
+                </th>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Phone</th>
+                  <th>Image</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody class="table-border-bottom-0">
+  
+                <% for(var ad of totalAdminData) {%>
+                  <tr>
+                    <td>
+                      <input type="checkbox" value="<%= ad.id%>" name="adminIds">
+                    </td>
+                    <td>
+                      <%= ad.name%>
+                    </td>
+                    <td>
+                      <%= ad.email%>
+                    </td>
+                    <td>
+                      <%= ad.number%>
+                    </td>
+                    <td>
+                      <img src="<%= ad.adminImg%>" alt="adminImage" class="rounded-circle" width="50px" />
+                    </td>
+                    <td>
+                      <div class="d-flex align-items-center">
+                        <%if(ad.isActive){%>
+                          <a href="/admin/isActive/<%=ad.id%>" class="btn btn-danger"><i
+                              class="mdi mdi-account-check-outline me-1"></i>DeActive</a>
+                          <%} else{%>
+                            <a href="/admin/deActive/<%=ad.id%>" class="btn btn-primary"><i
+                                class="mdi mdi-account-check-outline me-1"></i>Active</a>
+                            <%}%>
+  
+                      </div>
+                    </td>
+                    <td>
+                      <a href="/admin/editAdminData/<%= ad.id%>"><i class="bx bx-edit-alt me-1 text-dark"></i> </a>
+                      <a href="/admin/deleteAdminData/<%= ad.id%>"><i class="bx bx-trash me-1 text-dark"></i> </a>
+                    </td>
+                  </tr>
+                  <% }%>
+                    <tr style="text-align: center;">
+                      <td colspan="9">
+                        <% if(perPage!=0) {%>
+                          <a class="btn btn-success" href="/admin/view_admin/?page=<%= perPage-1%>">Prev</a>
+                          <% }%>
+  
+                            <a class="btn btn-success" href="/admin/view_admin/?page=<%= perPage%>">
+                              <%= parseInt(perPage)+1 %>
+                            </a>
+  
+                            <% var next=parseInt(perPage)+1 %>
+                              <% if(next!=perPagedata) {%>
+                                <a class="btn btn-success" href="/admin/view_admin/?page=<%= next%>">Next</a>
+                                <% }%>
+                      </td>
+                    </tr>
+              </tbody>
+            </table>
+          </div>
+        </form>
+      </div>
+      <!--/ Basic Bootstrap Table -->
+
+      <%- include('footer') %>
+
+      <script>
+        $("#checkAll").click(function () {
+            $('input:checkbox').not(this).prop('checked', this.checked);
+        });
+    </script>
